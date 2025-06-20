@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {button} from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client"; 
 
@@ -46,7 +46,7 @@ export default function Home() {
     return (
       <div className="p-4 flex flex-col gap-4">
         <p>Welcome, {session.user.name}</p>
-        <button onClick={()=>authClient.signOut()} className="bg-red-500 text-white p-2 rounded">Sign Out</button>
+        <Button onClick={()=>authClient.signOut()} className="bg-red-500 text-white p-2 rounded">Sign Out</Button>
       </div>
     );
   }
