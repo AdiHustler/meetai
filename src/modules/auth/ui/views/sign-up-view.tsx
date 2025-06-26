@@ -7,13 +7,14 @@ import Link from "next/link";
 import { OctagonAlertIcon } from "lucide-react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Alert, AlertTitle} from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
+import {FaGithub, FaGoogle} from "react-icons/fa";
+import { on } from "events";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -48,6 +49,7 @@ export const SignUpView = () => {
       name: data.name,
       email: data.email,
       password: data.password,
+      callbackURL: "/",
       }, {
       onError: ({error}) => {
         setPending(false);
@@ -59,6 +61,23 @@ export const SignUpView = () => {
         },
       });
     };
+    const onSocial =(provider:"google"| "github") => {
+        setError(null);
+        setPending(true);
+    
+        authClient.signIn.social({
+          provider: provider,
+          callbackURL: "/",
+          }, {
+          onError: ({error}) => {
+            setPending(false);
+            setError(error.message);
+            },
+          onSuccess: () => {
+            setPending(false);
+            },
+          });
+      };
   return (
     <div className="text-l flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
@@ -157,13 +176,15 @@ export const SignUpView = () => {
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <Button disabled={pending} variant="outline" className="w-full">
-                    <img src="/google.svg" alt="Google" className="h-4 w-4 mr-2" />
-                    Google
+                  <Button disabled={pending}
+                  onClick={() => onSocial("google")}
+                  variant="outline" className="w-full">
+                    <FaGoogle className="h-4 w-4 mr-2" />
                   </Button>
-                  <Button disabled={pending} variant="outline" className="w-full">
-                    <img src="/github.svg" alt="GitHub" className="h-4 w-4 mr-2" />
-                    GitHub
+                  <Button disabled={pending}
+                  onClick={() => onSocial("github")}
+                  variant="outline" className="w-full">
+                    <FaGithub className="h-4 w-4 mr-2" />
                   </Button>
                 </div>
                 <div className="text-center text-sm text-muted-foreground">
