@@ -9,12 +9,12 @@ import { ErrorState } from "@/components/error-state";
 export const MeetingsView = () =>{
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}));
-  return(
+  return (
     <div>
       {JSON.stringify(data)}
     </div>
-  )
-}
+  );
+};
 
 export const MeetingsViewLoading = () => {
   return (
