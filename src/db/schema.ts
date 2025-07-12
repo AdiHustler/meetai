@@ -58,7 +58,7 @@ export const agents=pgTable("agents",{
 });
 
 export const meetingStatus = pgEnum("meeting_status",[
-	"upcoming","active","completed","processing","cancelled"
+	"upcoming","active","completed","processing","cancelled",
 ]);
 
 export const meetings=pgTable("meetings",{
